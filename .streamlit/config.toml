@@ -1,0 +1,37 @@
+# Identidade visual CadocScore (ver BRAND.md)
+
+[theme]
+base = "light"
+primaryColor = "#1C5CAB"
+backgroundColor = "#F7F9FC"
+secondaryBackgroundColor = "#EAF0F7"
+textColor = "#0B1B2E"
+linkColor = "#1C5CAB"
+borderColor = "#D5DEE9"
+showWidgetBorder = true
+baseRadius = "0.6rem"
+buttonRadius = "0.6rem"
+font = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+headingFont = "Plus Jakarta Sans:https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
+headingFontWeights = [800, 700, 700, 600, 600, 600]
+metricValueFontWeight = 700
+metricValueFontSize = "1.9rem"
+blueColor = "#1C5CAB"
+greenColor = "#0B7A54"
+redColor = "#D03B3B"
+orangeColor = "#EB6834"
+dataframeHeaderBackgroundColor = "#EAF0F7"
+chartCategoricalColors = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7", "#e34948"]
+
+[theme.sidebar]
+backgroundColor = "#0B2545"
+secondaryBackgroundColor = "#13335C"
+textColor = "#E6EDF7"
+primaryColor = "#1BAF7A"
+borderColor = "#1E3F6B"
+
+[server]
+headless = true
+
+[client]
+toolbarMode = "minimal"
