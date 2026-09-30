@@ -52,6 +52,23 @@ def typical_levels() -> dict[str, int]:
     return {q["id"]: int(np.argmax(q["counts"])) for q in QUESTIONS}
 
 
+def read_user_csv(upload) -> pd.DataFrame:
+    """Lê CSV com separador , ou ; e com ou sem BOM (como o Excel salva)."""
+    df = pd.read_csv(upload, sep=None, engine="python", encoding="utf-8-sig", dtype=str)
+    df.columns = df.columns.str.strip()
+    return df
+
+
+def to_numeric(df: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
+    """Converte números no formato brasileiro (1.234,56) ou internacional (1234.56)."""
+    for col in columns:
+        text = df[col].astype(str).str.strip()
+        brazilian = text.str.contains(",", regex=False)
+        text = text.where(~brazilian, text.str.replace(".", "", regex=False).str.replace(",", ".", regex=False))
+        df[col] = pd.to_numeric(text, errors="coerce")
+    return df.dropna(subset=columns)
+
+
 def go_to(key: str, label: str):
     if st.button(label, key=f"go_{key}_{label}"):
         st.switch_page(PAGES[key])
@@ -223,10 +240,12 @@ def page_monitor():
         st.rerun()
     upload = c2.file_uploader("Importar histórico (CSV)", type="csv", label_visibility="collapsed")
     if upload:
-        imported = pd.read_csv(upload)
+        imported = read_user_csv(upload)
         if not set(HISTORY_COLUMNS) <= set(imported.columns):
             st.error("O CSV precisa das colunas: " + ", ".join(HISTORY_COLUMNS))
         else:
+            imported = to_numeric(imported, [*DIMENSIONS, *KPI_COLUMNS])
+            imported["Data"] = imported["Data"].astype(str)
             st.session_state["history"] = imported[HISTORY_COLUMNS].to_dict("records")
             history = st.session_state["history"]
     if history and c3.button("Limpar histórico"):
@@ -414,10 +433,11 @@ def page_crosscheck():
 
     upload = st.file_uploader("CSV (opcional)", type="csv")
     if upload:
-        df = pd.read_csv(upload, sep=None, engine="python", decimal=",")
+        df = read_user_csv(upload)
         if not {"Mês", "Documento A", "Documento B"} <= set(df.columns):
             st.error("O CSV precisa das colunas Mês, Documento A e Documento B.")
             return
+        df = to_numeric(df, ["Documento A", "Documento B"])
     else:
         df = sample_crosscheck()
 

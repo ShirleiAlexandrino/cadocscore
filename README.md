@@ -19,6 +19,14 @@ instituições financeiras, considerando **qualidade, confiabilidade e integraç
 
 O protótipo não tem banco de dados: o histórico fica na sessão e é salvo e carregado por CSV.
 
+## Arquivos de exemplo
+
+A pasta `exemplos/` tem arquivos prontos para enviar no app (formato do Excel: `;` como separador e vírgula decimal;
+o app também aceita `,` como separador e ponto decimal):
+
+- `historico_monitoramento.csv`: página **Monitorar**. Seis trimestres de uma cooperativa S4 fictícia, com score de 25 a 60 e uma dimensão que regride no último trimestre.
+- `validacao_4010_x_3040.csv`: página **Validação entre CADOCs**. Doze meses de balancete × SCR, com três divergências acima de 1% (mar, jul e nov).
+
 ## Rodar localmente
 
 ```bash
